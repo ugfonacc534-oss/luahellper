@@ -1,0 +1,11 @@
+# One-click deploy to Render (https://render.com) — free tier.
+# Your public URL becomes https://<name>.onrender.com  → name it "luahellper".
+services:
+  - type: web
+    name: luahellper
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    envVars:
+      - key: LUAHELLPER_ADMIN     # dashboard password (set your own in the Render UI)
+        sync: false

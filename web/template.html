@@ -1,0 +1,168 @@
+<title>luahellper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Sora:wght@600;700&display=swap">
+<style>
+:root{
+  --ground:#fbf3fb; --panel:#ffffff; --panel-2:#fdf4fc; --border:#f0dbf2; --border-strong:#e6c6ea;
+  --ink:#2a0f36; --muted:#8a6b95; --faint:#b193bd;
+  --ember:#d6249f; --ember-ink:#ffffff; --ember-2:#7c3aed; --ok:#12996b; --bad:#d5265f;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --sans:"Sora",system-ui,sans-serif; --body:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  --shadow:0 1px 2px rgba(120,20,110,.07),0 12px 30px rgba(150,40,140,.10);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#140a22; --panel:#1e1236; --panel-2:#251545; --border:#3a2360; --border-strong:#4d2f7d;
+  --ink:#f4e9ff; --muted:#bda6dc; --faint:#8f76b4;
+  --ember:#ff5cc8; --ember-ink:#1a0616; --ember-2:#b98cff; --ok:#4cd6a0; --bad:#ff6a9c;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 14px 36px rgba(60,10,90,.5);
+}}
+:root[data-theme="dark"]{
+  --ground:#140a22; --panel:#1e1236; --panel-2:#251545; --border:#3a2360; --border-strong:#4d2f7d;
+  --ink:#f4e9ff; --muted:#bda6dc; --faint:#8f76b4;
+  --ember:#ff5cc8; --ember-ink:#1a0616; --ember-2:#b98cff; --ok:#4cd6a0; --bad:#ff6a9c;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 14px 36px rgba(60,10,90,.5);
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:var(--body);margin:0;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:820px;margin:0 auto;padding-inline:20px;padding-block:0}
+header{padding-block:32px 8px}
+.brand{display:flex;align-items:center;gap:11px;font-family:var(--mono);font-weight:700;font-size:22px;letter-spacing:-.02em}
+.dot{width:12px;height:12px;border-radius:50%;background:linear-gradient(135deg,var(--ember),var(--ember-2));box-shadow:0 0 0 4px color-mix(in srgb,var(--ember) 22%,transparent)}
+.brand{background:linear-gradient(90deg,var(--ember),var(--ember-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag{margin:12px 0 0;color:var(--muted);max-width:60ch;font-size:14.5px}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:16px}
+section{margin-block:18px}
+label.cap{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+textarea{width:100%;background:var(--panel-2);color:var(--ink);border:1px solid var(--border);border-radius:10px;
+  padding:13px;font-family:var(--mono);font-size:12.5px;line-height:1.6;tab-size:2;resize:vertical;min-height:230px}
+textarea:focus,button:focus-visible{outline:2px solid var(--ember);outline-offset:1px}
+.bar{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:center;margin-top:14px}
+.toggle{display:flex;align-items:center;gap:8px;font-size:14px;user-select:none;cursor:pointer}
+.toggle input{width:16px;height:16px;accent-color:var(--ember)}
+.grow{flex:1;min-width:80px}
+.stat{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.stat b{color:var(--ok);font-weight:500}.stat.err b{color:var(--bad)}
+button{font-family:var(--sans);font-weight:600;font-size:14px;border-radius:10px;border:1px solid transparent;padding:11px 20px;cursor:pointer;transition:transform .06s,filter .15s}
+button:active{transform:translateY(1px)}
+.btn-primary{background:linear-gradient(135deg,var(--ember),var(--ember-2));color:#fff}
+.btn-primary:hover{filter:brightness(1.08)}.btn-primary[disabled]{opacity:.5;cursor:progress}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--border-strong);padding:9px 15px;font-size:13px}
+.btn-ghost:hover{background:var(--panel-2)}.btn-ghost[disabled]{opacity:.4;cursor:not-allowed}
+.outhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.status{font-family:var(--mono);font-size:12.5px;padding:10px 13px;border-radius:9px;margin-bottom:10px;display:none}
+.status.show{display:block}
+.status.ok{background:color-mix(in srgb,var(--ok) 14%,transparent);color:var(--ok);border:1px solid color-mix(in srgb,var(--ok) 35%,transparent)}
+.status.bad{background:color-mix(in srgb,var(--bad) 12%,transparent);color:var(--bad);border:1px solid color-mix(in srgb,var(--bad) 35%,transparent)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+footer{color:var(--faint);font-size:12px;padding-block:22px 40px;margin-top:12px;font-family:var(--mono)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="brand"><span class="dot"></span>luahellper</div>
+  <p class="tag">Paste your Roblox script. It's checked for errors, then obfuscated — renamed, string-encrypted, per-build. Runs 100% in your browser; nothing is uploaded. <span style="color:var(--ember-2)">Full VM virtualization is available via self-host (see repo).</span></p>
+</header>
+
+<section class="panel">
+  <label class="cap" for="src">Your script</label>
+  <textarea id="src" spellcheck="false"></textarea>
+  <div class="bar">
+    <label class="toggle"><input type="checkbox" id="vm" checked> Heavy mode (number + junk layers)</label>
+    <span class="grow stat" id="stat">engine loading…</span>
+    <button class="btn-primary" id="go" type="button">Obfuscate</button>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="outhead"><label class="cap" style="margin:0" for="out">Output</label></div>
+  <div class="status" id="status"></div>
+  <textarea id="out" readonly spellcheck="false" placeholder="Obfuscated script appears here…"></textarea>
+  <div class="actions">
+    <button class="btn-ghost" id="copyOut" type="button" disabled>Copy script</button>
+    <button class="btn-ghost" id="getLoad" type="button" disabled>Get loadstring one-liner</button>
+  </div>
+</section>
+
+<footer>luahellper · runs 100% in your browser · nothing you paste is uploaded</footer>
+</div>
+
+<script>/*__OBFJS__*/</script>
+<script>
+(function(){
+  var EXAMPLE=[
+    "local Players = game:GetService(\"Players\")",
+    "local function greet(name)",
+    "\treturn `Hello, {name}!`",
+    "end",
+    "local total = 0",
+    "for i = 1, 10 do",
+    "\tif i % 2 == 0 then continue end",
+    "\ttotal += i",
+    "end",
+    "print(greet(\"player\"), total)"
+  ].join("\n");
+  var $=function(id){return document.getElementById(id)};
+  var src=$("src"),out=$("out"),go=$("go"),vm=$("vm"),stat=$("stat"),
+      status=$("status"),copyOut=$("copyOut"),getLoad=$("getLoad");
+  src.value=EXAMPLE;
+  var lastObf="";
+
+  function setStat(m,err){stat.textContent=m;stat.classList.toggle("err",!!err);}
+  function showStatus(kind,msg){status.className="status show "+kind;status.textContent=msg;}
+  function hideStatus(){status.className="status";}
+
+  // pure-JS engine: ready as soon as this script runs, no VM/eval, no CDN.
+  go.disabled=false;
+  setStat(window.LH_OBFUSCATE_JS?"ready":"engine missing");
+
+  // build loadstring([==[...]==])() choosing a bracket level not present in the code
+  function toLoadstring(code){
+    var lvl=0,eq;
+    while(true){eq="]"+Array(lvl+1).join("=")+"]";if(code.indexOf(eq)===-1)break;lvl++;}
+    var open="[["+"",close="]]";
+    if(lvl>0){open="["+Array(lvl+1).join("=")+"[";close="]"+Array(lvl+1).join("=")+"]";}
+    return "loadstring("+open+"\n"+code+"\n"+close+")()";
+  }
+
+  go.addEventListener("click",function(){
+    if(!window.LH_OBFUSCATE_JS){setStat("engine missing — reopen the page",true);return;}
+    go.disabled=true;setStat("working…");hideStatus();out.value="";
+    lastObf="";copyOut.disabled=true;getLoad.disabled=true;
+    setTimeout(function(){
+      try{
+        var res=window.LH_OBFUSCATE_JS(src.value, {
+          seed: Math.floor(Math.random()*1e9)+1,
+          numbers: vm.checked, junk: vm.checked   // heavy layers gated by the toggle
+        });
+        lastObf=res;out.value=res;
+        copyOut.disabled=false;getLoad.disabled=false;
+        showStatus("ok","No errors. Obfuscated ✓");
+        var ratio=src.value.length?Math.round(res.length/src.value.length*10)/10:0;
+        setStat("done · "+res.length.toLocaleString()+" bytes ("+ratio+"×)");
+      }catch(e){
+        var msg=String(e.message||e);
+        var m=msg.match(/(\d+):\s*(.*)$/);
+        if(m)showStatus("bad","Error on line "+m[1]+" — "+m[2]);
+        else showStatus("bad","Error — "+msg);
+        out.value=msg;setStat("found an error",true);
+      }
+      go.disabled=false;
+    },20);
+  });
+
+  function copy(text,btn,label){
+    if(navigator.clipboard)navigator.clipboard.writeText(text);
+    else{out.select();document.execCommand&&document.execCommand("copy");}
+    var o=btn.textContent;btn.textContent="Copied";setTimeout(function(){btn.textContent=o;},1200);
+  }
+  copyOut.addEventListener("click",function(){if(lastObf)copy(lastObf,this);});
+  getLoad.addEventListener("click",function(){
+    if(!lastObf)return;
+    var one=toLoadstring(lastObf);
+    out.value=one;out.scrollTop=0;copy(one,this);
+    showStatus("ok","Ready — paste this one line into your executor.");
+  });
+})();
+</script>
